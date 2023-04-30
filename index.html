@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Spell Checker</title>
+  <script src="https://cdn.jsdelivr.net/npm/spellchecker@3.4.0/spellchecker.js"></script>
+  <script>
+    function checkSpelling() {
+      const paragraph = document.getElementById("paragraph");
+      const text = paragraph.innerText;
+      const spellchecker = new Spellchecker();
+      const mistakes = spellchecker.checkSpelling(text);
+      mistakes.forEach((mistake) => {
+        const range = document.createRange();
+        range.setStart(paragraph.firstChild, mistake.start);
+        range.setEnd(paragraph.firstChild, mistake.end);
+        const span = document.createElement("span");
+        span.style.backgroundColor = "yellow";
+        range.surroundContents(span);
+      });
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+      const paragraph = document.getElementById("paragraph");
+      paragraph.addEventListener("input", checkSpelling);
+    });
+  </script>
+</head>
+<body>
+  <div id="paragraph" contentEditable="true">
+    This is a sample paragraph with a few misspelled words.
+  </div>
+</body>
+</html>
