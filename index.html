@@ -19,14 +19,10 @@
         range.surroundContents(span);
       });
     }
-    window.addEventListener("DOMContentLoaded", () => {
-      const paragraph = document.getElementById("paragraph");
-      paragraph.addEventListener("input", checkSpelling);
-    });
   </script>
 </head>
 <body>
-  <div id="paragraph" contentEditable="true">
+  <div id="paragraph" contentEditable="true" oninput="checkSpelling()">
     This is a sample paragraph with a few misspelled words.
   </div>
 </body>
