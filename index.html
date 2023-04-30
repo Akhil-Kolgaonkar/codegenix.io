@@ -10,6 +10,7 @@
       const text = paragraph.innerText;
       const spellchecker = new Spellchecker();
       const mistakes = spellchecker.checkSpelling(text);
+      const incorrectWords = [];
       mistakes.forEach((mistake) => {
         const range = document.createRange();
         range.setStart(paragraph.firstChild, mistake.start);
@@ -17,13 +18,45 @@
         const span = document.createElement("span");
         span.style.backgroundColor = "yellow";
         range.surroundContents(span);
+        incorrectWords.push(text.substring(mistake.start, mistake.end));
       });
+      displayIncorrectWords(incorrectWords);
+    }
+    
+    function displayIncorrectWords(incorrectWords) {
+      const incorrectWordsList = document.getElementById("incorrectWordsList");
+      incorrectWordsList.innerHTML = "";
+      incorrectWords.forEach((word) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = word;
+        const replaceInput = document.createElement("input");
+        replaceInput.type = "text";
+        listItem.appendChild(replaceInput);
+        const replaceButton = document.createElement("button");
+        replaceButton.textContent = "Replace";
+        replaceButton.addEventListener("click", () => {
+          replaceWord(word, replaceInput.value);
+        });
+        listItem.appendChild(replaceButton);
+        incorrectWordsList.appendChild(listItem);
+      });
+    }
+    
+    function replaceWord(oldWord, newWord) {
+      const paragraph = document.getElementById("paragraph");
+      const text = paragraph.innerText;
+      const newText = text.replaceAll(oldWord, newWord);
+      paragraph.innerText = newText;
+      checkSpelling();
     }
   </script>
 </head>
 <body>
-  <div id="paragraph" contentEditable="true" oninput="checkSpelling()">
-    This is a sample paragraph with a few misspelled words.
+  <div>
+    <div id="paragraph" contentEditable="true" oninput="checkSpelling()">
+      This is a sample paragraph with a few misspelled words.
+    </div>
+    <ul id="incorrectWordsList"></ul>
   </div>
 </body>
 </html>
