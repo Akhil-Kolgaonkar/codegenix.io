@@ -12,7 +12,7 @@
   <body>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <script>
-      // Initialize canvas and ball
+      // Initialize canvas, ball, and paddle
       const canvas = document.getElementById("gameCanvas");
       const ctx = canvas.getContext("2d");
       let x = canvas.width / 2;
@@ -20,6 +20,7 @@
       const ballRadius = 10;
       let dx = 2;
       let dy = -2;
+      let paddleX = canvas.width / 2;
 
       // Draw the ball
       function drawBall() {
@@ -43,8 +44,8 @@
         if (y + dy < ballRadius) {
           dy = -dy;
         } else if (y + dy > canvas.height - ballRadius) {
-          // Check for collision with paddle (for now, we'll just use the bottom of the screen)
-          if (x > canvas.width / 2 - 40 && x < canvas.width / 2 + 40) {
+          // Check for collision with paddle
+          if (x > paddleX - 40 && x < paddleX + 40) {
             dy = -dy;
           } else {
             // Game over!
@@ -54,13 +55,30 @@
         }
       }
 
-      // Draw the paddle (for now, we'll just use the bottom of the screen)
+      // Draw the paddle
       function drawPaddle() {
         ctx.beginPath();
-        ctx.rect(canvas.width / 2 - 40, canvas.height - 10, 80, 10);
+        ctx.rect(paddleX - 40, canvas.height - 10, 80, 10);
         ctx.fillStyle = "black";
         ctx.fill();
         ctx.closePath();
+      }
+
+      // Move the paddle
+      function movePaddle(evt) {
+        if (evt.keyCode === 37) {
+          // Left arrow key pressed
+          paddleX -= 10;
+          if (paddleX < 40) {
+            paddleX = 40;
+          }
+        } else if (evt.keyCode === 39) {
+          // Right arrow key pressed
+          paddleX += 10;
+          if (paddleX > canvas.width - 40) {
+            paddleX = canvas.width - 40;
+          }
+        }
       }
 
       // Draw the game
@@ -81,6 +99,9 @@
 
       // Start the game
       draw();
+
+      // Register event listener for arrow key presses
+      document.addEventListener("keydown", movePaddle);
     </script>
   </body>
 </html>
