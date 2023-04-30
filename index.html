@@ -1,62 +1,86 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Spell Checker</title>
-  <script src="https://cdn.jsdelivr.net/npm/spellchecker@3.4.0/spellchecker.js"></script>
-  <script>
-    function checkSpelling() {
-      const paragraph = document.getElementById("paragraph");
-      const text = paragraph.innerText;
-      const spellchecker = new Spellchecker();
-      const mistakes = spellchecker.checkSpelling(text);
-      const incorrectWords = [];
-      mistakes.forEach((mistake) => {
-        const range = document.createRange();
-        range.setStart(paragraph.firstChild, mistake.start);
-        range.setEnd(paragraph.firstChild, mistake.end);
-        const span = document.createElement("span");
-        span.style.backgroundColor = "yellow";
-        range.surroundContents(span);
-        incorrectWords.push(text.substring(mistake.start, mistake.end));
-      });
-      displayIncorrectWords(incorrectWords);
-    }
-    
-    function displayIncorrectWords(incorrectWords) {
-      const incorrectWordsList = document.getElementById("incorrectWordsList");
-      incorrectWordsList.innerHTML = "";
-      incorrectWords.forEach((word) => {
-        const listItem = document.createElement("li");
-        listItem.textContent = word;
-        const replaceInput = document.createElement("input");
-        replaceInput.type = "text";
-        listItem.appendChild(replaceInput);
-        const replaceButton = document.createElement("button");
-        replaceButton.textContent = "Replace";
-        replaceButton.addEventListener("click", () => {
-          replaceWord(word, replaceInput.value);
-        });
-        listItem.appendChild(replaceButton);
-        incorrectWordsList.appendChild(listItem);
-      });
-    }
-    
-    function replaceWord(oldWord, newWord) {
-      const paragraph = document.getElementById("paragraph");
-      const text = paragraph.innerText;
-      const newText = text.replaceAll(oldWord, newWord);
-      paragraph.innerText = newText;
-      checkSpelling();
-    }
-  </script>
-</head>
-<body>
-  <div>
-    <div id="paragraph" contentEditable="true" oninput="checkSpelling()">
-      This is a sample paragraph with a few misspelled words.
-    </div>
-    <ul id="incorrectWordsList"></ul>
-  </div>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Red Ball Game</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <script>
+      // Initialize canvas and ball
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      let x = canvas.width / 2;
+      let y = canvas.height - 30;
+      const ballRadius = 10;
+      let dx = 2;
+      let dy = -2;
+
+      // Draw the ball
+      function drawBall() {
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+        ctx.fillStyle = "red";
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      // Move the ball and check for collisions
+      function moveBall() {
+        // Move ball
+        x += dx;
+        y += dy;
+
+        // Check for collision with walls
+        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+          dx = -dx;
+        }
+        if (y + dy < ballRadius) {
+          dy = -dy;
+        } else if (y + dy > canvas.height - ballRadius) {
+          // Check for collision with paddle (for now, we'll just use the bottom of the screen)
+          if (x > canvas.width / 2 - 40 && x < canvas.width / 2 + 40) {
+            dy = -dy;
+          } else {
+            // Game over!
+            alert("GAME OVER");
+            document.location.reload();
+          }
+        }
+      }
+
+      // Draw the paddle (for now, we'll just use the bottom of the screen)
+      function drawPaddle() {
+        ctx.beginPath();
+        ctx.rect(canvas.width / 2 - 40, canvas.height - 10, 80, 10);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      // Draw the game
+      function draw() {
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the ball and paddle
+        drawBall();
+        drawPaddle();
+
+        // Move the ball
+        moveBall();
+
+        // Request the next frame
+        requestAnimationFrame(draw);
+      }
+
+      // Start the game
+      draw();
+    </script>
+  </body>
 </html>
