@@ -107,6 +107,12 @@ function component(width, height, color, x, y, type) {
 }
 
 function updateGameArea() {
+     // Clear the canvas
+    myGameArea.clear();
+    
+    // Draw the background image
+    myGameArea.context.drawImage(img, 0, 0, myGameArea.canvas.width, myGameArea.canvas.height);
+
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
