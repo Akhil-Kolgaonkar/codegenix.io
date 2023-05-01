@@ -22,11 +22,6 @@ function startGame() {
     myGamePiece = new component(30, 30, "red", 10, 120);
     myScore = new component("30px", "Consolas", "black", 720, 40, "text");    
     myGameArea.start();
-    var img = new Image();
-    img.onload = function() {
-        myGameArea.context.drawImage(img, 0, 0);
-    }
-    img.src = 'modern-vector.jpg';
     document.addEventListener("keydown", function(event) {
         switch(event.keyCode) {
             case 37: // left arrow
@@ -107,12 +102,6 @@ function component(width, height, color, x, y, type) {
 }
 
 function updateGameArea() {
-     // Clear the canvas
-    myGameArea.clear();
-    
-    // Draw the background image
-    myGameArea.context.drawImage(img, 0, 0, myGameArea.canvas.width, myGameArea.canvas.height);
-
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
