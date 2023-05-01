@@ -18,14 +18,15 @@ var myScore;
 
     
 function startGame() {
+    
+    myGamePiece = new component(30, 30, "red", 10, 120);
+    myScore = new component("30px", "Consolas", "black", 720, 40, "text");    
+    myGameArea.start();
     var img = new Image();
     img.onload = function() {
         myGameArea.context.drawImage(img, 0, 0);
     }
     img.src = 'modern-vector-graphic-abstract-background.jpg';
-    myGamePiece = new component(30, 30, "red", 10, 120);
-    myScore = new component("30px", "Consolas", "black", 720, 40, "text");    
-    myGameArea.start();
     document.addEventListener("keydown", function(event) {
         switch(event.keyCode) {
             case 37: // left arrow
