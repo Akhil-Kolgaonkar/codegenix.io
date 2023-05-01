@@ -18,15 +18,34 @@ var myScore;
 
 function startGame() {
     myGamePiece = new component(30, 30, "red", 10, 120);
-    myScore = new component("30px", "Consolas", "black", 720, 40, "text");
+    myScore = new component("30px", "Consolas", "black", 720, 40, "text");    
     myGameArea.start();
+    document.addEventListener("keydown", function(event) {
+        switch(event.keyCode) {
+            case 37: // left arrow
+                moveleft();
+                break;
+            case 38: // up arrow
+                moveup();
+                break;
+            case 39: // right arrow
+                moveright();
+                break;
+            case 40: // down arrow
+                movedown();
+                break;
+        }
+    });
+    document.addEventListener("keyup", function(event) {
+        clearmove();
+    });
 }
 
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = 1280;
-        this.canvas.height = 720;
+        this.canvas.width = 1080;
+        this.canvas.height = 620;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
@@ -90,7 +109,7 @@ function updateGameArea() {
     }
     myGameArea.clear();
     myGameArea.frameNo += 1;
-    if (myGameArea.frameNo == 1 || everyinterval(150)) {
+    if (myGameArea.frameNo == 1 || everyinterval(150)) { //increase difficulty by inc. everyinterval
         x = myGameArea.canvas.width;
         minHeight = 20;
         maxHeight = 200;
@@ -98,7 +117,7 @@ function updateGameArea() {
         minGap = 50;
         maxGap = 200;
         gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-        myObstacles.push(new component(10, height, "green", x, 0));
+        myObstacles.push(new component(10, height, "blue", x, 0));
         myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
     }
     for (i = 0; i < myObstacles.length; i += 1) {
@@ -137,14 +156,29 @@ function clearmove() {
     myGamePiece.speedX = 0; 
     myGamePiece.speedY = 0; 
 }
+
+function restartGame() {
+  myObstacles = [];
+  myGameArea.frameNo = 0;
+  myGamePiece.x = 10;
+  myGamePiece.y = 120;
+  myGamePiece.speedX = 0;
+  myGamePiece.speedY = 0;
+  myGameArea.interval = setInterval(updateGameArea, 20);
+}
+
 </script>
-<div style="text-align:center;width:480px;">
+<div style="text-align:center;width:1280px;">
   <button onmousedown="moveup()" onmouseup="clearmove()" ontouchstart="moveup()">UP</button><br><br>
   <button onmousedown="moveleft()" onmouseup="clearmove()" ontouchstart="moveleft()">LEFT</button>
   <button onmousedown="moveright()" onmouseup="clearmove()" ontouchstart="moveright()">RIGHT</button><br><br>
   <button onmousedown="movedown()" onmouseup="clearmove()" ontouchstart="movedown()">DOWN</button>
+<br><br>
+  <button onclick="restartGame()">RESTART</button>
 </div>
 
-<p>The score will count one point for each frame you manage to "stay alive".</p>
+<p>The score will count one point for each frame you manage to "stay alive".
+<Br><Br> Copyright @ Akhil Kolgaonkar
+</p>
 </body>
 </html>
