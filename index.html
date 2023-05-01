@@ -17,6 +17,11 @@ var myObstacles = [];
 var myScore;
 
 function startGame() {
+    var img = new Image();
+    img.onload = function() {
+        myGameArea.context.drawImage(img, 0, 0);
+    }
+    img.src = 'modern-vector-graphic-abstract-background.jpg';
     myGamePiece = new component(30, 30, "red", 10, 120);
     myScore = new component("30px", "Consolas", "black", 720, 40, "text");    
     myGameArea.start();
