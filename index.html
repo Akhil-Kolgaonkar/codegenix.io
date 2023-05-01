@@ -118,6 +118,9 @@ function updateGameArea() {
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
             myGameArea.stop();
+	    var gameOverMsg = new component("80px", "Consolas", "red", myGameArea.canvas.width/2, myGameArea.canvas.height/2, "text");
+            gameOverMsg.text = "GAME OVER";
+            gameOverMsg.update();
             return;
         } 
     }
