@@ -1,68 +1,57 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>HTML Game</title>
-	<style>
-		canvas {
-			border: 1px solid black;
-		}
-	</style>
-</head>
-<body>
-
-	<canvas id="gameCanvas" width="800" height="600"></canvas>
-
-	<script>
-		// Get canvas element and 2D context
-		var canvas = document.getElementById("gameCanvas");
-		var ctx = canvas.getContext("2d");
-
-		// Set initial position and speed of player
-		var playerX = canvas.width/2;
-		var playerY = canvas.height-30;
-		var playerSpeed = 5;
-
-		// Set initial position and speed of enemy
-		var enemyX = canvas.width/2;
-		var enemyY = 0;
-		var enemySpeed = 2;
-
-		// Listen for keyboard input to move player
-		document.addEventListener("keydown", function(event) {
-			if(event.key === "ArrowLeft") {
-				playerX -= playerSpeed;
-			}
-			else if(event.key === "ArrowRight") {
-				playerX += playerSpeed;
-			}
-		});
-
-		// Update game state and render graphics every frame
-		function update() {
-			// Move enemy down the screen
-			enemyY += enemySpeed;
-
-			// Check for collision between player and enemy
-			if(enemyY > playerY && enemyX > playerX && enemyX < playerX + 50) {
-				alert("Game over!");
-				document.location.reload();
-			}
-
-			// Clear canvas and draw player and enemy
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			ctx.fillStyle = "red";
-			ctx.fillRect(enemyX, enemyY, 50, 50);
-			ctx.fillStyle = "green";
-			ctx.fillRect(playerX, playerY, 50, 50);
-
-			// Request next frame
-			requestAnimationFrame(update);
+  <head>
+    <meta charset="utf-8">
+    <title>Flappy Bird Game</title>
+    <style>
+      /* CSS styling for game elements */
+	/* Set the canvas dimensions to fill the entire viewport */
+		#game-canvas {
+		  display: block;
+		  margin: auto;
+		  width: 100vw;
+		  height: 100vh;
+		  background-color: lightblue;
 		}
 
-		// Start game loop
-		requestAnimationFrame(update);
-	</script>
+		/* Style the game over message */
+		#game-over {
+		  position: absolute;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		  text-align: center;
+		  color: white;
+		  font-size: 30px;
+		  font-weight: bold;
+		  background-color: rgba(0, 0, 0, 0.7);
+		  padding: 20px;
+		  border-radius: 10px;
+		}
 
-</body>
+		/* Style the restart button */
+		#restart-button {
+		  display: block;
+		  margin: auto;
+		  padding: 10px 20px;
+		  background-color: #fff;
+		  color: blue;
+		  border: 2px solid blue;
+		  border-radius: 5px;
+		  font-size: 20px;
+		  cursor: pointer;
+		  transition: all 0.3s ease;
+		}
+
+		#restart-button:hover {
+		  background-color: blue;
+		  color: #fff;
+		}
+
+    </style>
+  </head>
+  <body>
+    <canvas id="game-canvas"></canvas>
+    <script src="flappy-bird.js"></script>
+  </body>
 </html>
