@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Document container styles */
+    #document-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Dropdown menu styles */
+    #document-select {
+      margin-top: 20px;
+    }
+
+    /* Parallax effect styles */
+    .parallax-section {
+      height: 100vh;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .parallax-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+    }
+
+    /* Add additional styling as needed */
+  </style>
+  <script>
+          // Function to check if user is authenticated
+      function isAuthenticated() {
+        // Implement your authentication logic here
+        // Return true if authenticated, false otherwise
+      }
+
+      // Function to display document viewer
+      function displayDocumentViewer(documentPath) {
+        // Check if the user is authenticated
+        if (isAuthenticated()) {
+          // Create and configure the document viewer
+          var viewer = new PDFViewer({
+            container: document.getElementById('document-container'),
+            // Add relevant configuration options for the viewer
+          });
+
+          // Load the document into the viewer
+          viewer.load(documentPath);
+        } else {
+          // Redirect to the login page or display an access denied message
+        }
+      }
+
+      // Function to handle document selection
+      function selectDocument(documentPath) {
+        // Remove existing viewer if any
+        var documentContainer = document.getElementById('document-container');
+        while (documentContainer.firstChild) {
+          documentContainer.firstChild.remove();
+        }
+
+        // Display the selected document
+        displayDocumentViewer(documentPath);
+      }
+
+      // Event listener to trigger the display of the document viewer
+      document.addEventListener('DOMContentLoaded', function() {
+        // Select the initial document based on your requirements
+        var initialDocumentPath = 'path/to/document1.pdf';
+        selectDocument(initialDocumentPath);
+      });
+
+      // Disable right-click context menu
+      document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+      });
+
+      // Event listener to detect key combinations
+      document.addEventListener('keydown', function(event) {
+        // Disable Ctrl+S (save) and PrtSc (print screen) key combinations
+        if ((event.ctrlKey && event.keyCode === 83) || event.keyCode === 44) {
+          event.preventDefault();
+          // Display a warning message or prevent default browser action
+        }
+      });
+
+      // Implement parallax effect using a suitable JavaScript library or framework
+      // Add necessary code to create the parallax effect on your website
+
+  </script>
+</head>
+<body>
+  <div class="parallax-section" style="background-image: url('path/to/image1.jpg')">
+    <div class="parallax-content">
+      <!-- Content for the first parallax section -->
+    </div>
+  </div>
+  
+  <div class="parallax-section" style="background-image: url('path/to/image2.jpg')">
+    <div class="parallax-content">
+      <!-- Content for the second parallax section -->
+    </div>
+  </div>
+
+  <!-- Add more parallax sections as needed -->
+
+  <div id="document-container"></div>
+  
+  <select id="document-select" onchange="selectDocument(this.value)">
+    <option value="path/to/document1.pdf">Document 1</option>
+    <option value="path/to/document2.pdf">Document 2</option>
+    <option value="path/to/document3.pdf">Document 3</option>
+    <!-- Add more options for additional documents -->
+  </select>
+
+  <!-- Add other sections and content for the parallax effect -->
+</body>
+</html>
